@@ -33,8 +33,7 @@ class EmployeeSummary {
           case "Engineer":
             return this.createEngineer();
           case "Intern":
-            // return this.createIntern();
-            return console.log("this.createIntern");
+            return this.createIntern();
         }
       });
   }
@@ -143,6 +142,60 @@ class EmployeeSummary {
           val.employeeGithub
         );
         this.employeeArray.push(newEngineer);
+        return this.askIfDone();
+      });
+  }
+
+  createIntern() {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "employeeName",
+          message: "What is this employee's name?",
+          validate: function(val) {
+            return /[a-z]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeId",
+          message: "What is this employee's ID number?",
+          validate: function(val) {
+            return /[1-9]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeEmail",
+          message: "What is this employee's email address?",
+          validate: function(val) {
+            let test;
+            if (val.includes("@")) {
+              test = true;
+            } else {
+              test = false;
+            }
+            return test;
+          }
+        },
+        {
+          type: "input",
+          name: "employeeSchool",
+          message: "What is this employee's school?",
+          validate: function(val) {
+            return /[a-z]/gi.test(val);
+          }
+        }
+      ])
+      .then(val => {
+        const newIntern = new Intern(
+          val.employeeName,
+          val.employeeId,
+          val.employeeEmail,
+          val.employeeSchool
+        );
+        this.employeeArray.push(newIntern);
         return this.askIfDone();
       });
   }
