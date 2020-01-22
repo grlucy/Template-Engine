@@ -31,8 +31,7 @@ class EmployeeSummary {
           case "Manager":
             return this.createManager();
           case "Engineer":
-            // return this.createEngineer();
-            return console.log("this.createEngineer()");
+            return this.createEngineer();
           case "Intern":
             // return this.createIntern();
             return console.log("this.createIntern");
@@ -83,8 +82,74 @@ class EmployeeSummary {
         }
       ])
       .then(val => {
-        return console.log("Got to then statement!");
+        const newManager = new Manager(
+          val.employeeName,
+          val.employeeId,
+          val.employeeEmail,
+          val.employeeOffice
+        );
+        this.employeeArray.push(newManager);
+        return this.askIfDone();
       });
+  }
+
+  createEngineer() {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "employeeName",
+          message: "What is this employee's name?",
+          validate: function(val) {
+            return /[a-z]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeId",
+          message: "What is this employee's ID number?",
+          validate: function(val) {
+            return /[1-9]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeEmail",
+          message: "What is this employee's email address?",
+          validate: function(val) {
+            let test;
+            if (val.includes("@")) {
+              test = true;
+            } else {
+              test = false;
+            }
+            return test;
+          }
+        },
+        {
+          type: "input",
+          name: "employeeGithub",
+          message: "What is this employee's GitHub username?",
+          validate: function(val) {
+            return /[a-z1-9]/gi.test(val);
+          }
+        }
+      ])
+      .then(val => {
+        const newEngineer = new Engineer(
+          val.employeeName,
+          val.employeeId,
+          val.employeeEmail,
+          val.employeeGithub
+        );
+        this.employeeArray.push(newEngineer);
+        return this.askIfDone();
+      });
+  }
+
+  askIfDone() {
+    console.log("use inquirer to ask if done?");
+    console.log(this.employeeArray);
   }
 }
 
@@ -96,6 +161,6 @@ newTeam.buildTeam();
 
 // Use inquirer to ask user for employee title. Switch statement to create correct class of employee based on title.
 
-// Use inquirer to ask user for employee name, id, email, and third thing depending on type. Add employee to the employeeArray.
+// Use inquirer to ask user for employee name, id, email, and third thing depending on type. Create new employee using appropriate subclass. Add employee to the employeeArray.
 
 // Use inquirer to ask the user if they have more employees to add to the team. If yes, repeat two steps above. If no, loop through employeeArray and build html page based on user input, then log success or error
