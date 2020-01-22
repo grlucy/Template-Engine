@@ -11,6 +11,7 @@ class EmployeeSummary {
   }
 
   buildTeam() {
+    this.employeeArray = [];
     console.log("Let's start building your engineering team!");
     return this.getTitle();
   }
@@ -201,8 +202,29 @@ class EmployeeSummary {
   }
 
   askIfDone() {
-    console.log("use inquirer to ask if done?");
-    console.log(this.employeeArray);
+    return inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "userDone",
+          message: "Are you done adding employees to this team?",
+          choices: ["Yes", "No"]
+        }
+      ])
+      .then(val => {
+        if (val.userDone === "Yes") {
+          return this.completeTeam();
+        } else {
+          return this.getTitle();
+        }
+      });
+  }
+
+  completeTeam() {
+    console.log(
+      "Loop through employeeArray and build html page based on user input, then log success."
+    );
+    // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
   }
 }
 
@@ -217,3 +239,5 @@ newTeam.buildTeam();
 // Use inquirer to ask user for employee name, id, email, and third thing depending on type. Create new employee using appropriate subclass. Add employee to the employeeArray.
 
 // Use inquirer to ask the user if they have more employees to add to the team. If yes, repeat two steps above. If no, loop through employeeArray and build html page based on user input, then log success or error
+
+// Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
