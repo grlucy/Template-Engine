@@ -10,6 +10,11 @@ class EmployeeSummary {
     this.employeeArray = [];
   }
 
+  buildTeam() {
+    console.log("Let's start building your engineering team!");
+    return this.getTitle();
+  }
+
   getTitle() {
     return inquirer
       .prompt([
@@ -24,8 +29,7 @@ class EmployeeSummary {
         const employeeTitle = val.employeeTitle;
         switch (employeeTitle) {
           case "Manager":
-            // return this.createManager();
-            return console.log("this.createManager()");
+            return this.createManager();
           case "Engineer":
             // return this.createEngineer();
             return console.log("this.createEngineer()");
@@ -35,11 +39,58 @@ class EmployeeSummary {
         }
       });
   }
+
+  createManager() {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "employeeName",
+          message: "What is this employee's name?",
+          validate: function(val) {
+            return /[a-z]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeId",
+          message: "What is this employee's ID number?",
+          validate: function(val) {
+            return /[1-9]/gi.test(val);
+          }
+        },
+        {
+          type: "input",
+          name: "employeeEmail",
+          message: "What is this employee's email address?",
+          validate: function(val) {
+            let test;
+            if (val.includes("@")) {
+              test = true;
+            } else {
+              test = false;
+            }
+            return test;
+          }
+        },
+        {
+          type: "input",
+          name: "employeeOffice",
+          message: "What is this employee's office number?",
+          validate: function(val) {
+            return /[1-9]/gi.test(val);
+          }
+        }
+      ])
+      .then(val => {
+        return console.log("Got to then statement!");
+      });
+  }
 }
 
 const newTeam = new EmployeeSummary();
 
-newTeam.getTitle();
+newTeam.buildTeam();
 
 // LOGIC FLOW:
 
