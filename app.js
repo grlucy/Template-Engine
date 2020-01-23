@@ -361,8 +361,9 @@ class EmployeeSummary {
       return comparison;
     }
     this.employeeArray.sort(compare);
+
     // Sort employeeArray by title
-    let employeeHTMLarray = [];
+    let sortedEmployeeArray = [];
     let tempManagerArray = [];
     let tempEngineerArray = [];
     let tempInternArray = [];
@@ -379,29 +380,54 @@ class EmployeeSummary {
           break;
       }
     }
-    //
-    console.log("-".repeat(75));
-    console.log("tempManagerArray:");
-    console.log(tempManagerArray);
-    console.log("-".repeat(75));
-    console.log("tempEngineerArray:");
-    console.log(tempEngineerArray);
-    console.log("-".repeat(75));
-    console.log("tempInternArray:");
-    console.log(tempInternArray);
-    console.log("-".repeat(75));
-    //
     for (const manager of tempManagerArray) {
-      employeeHTMLarray.push(manager);
+      sortedEmployeeArray.push(manager);
     }
     for (const engineer of tempEngineerArray) {
-      employeeHTMLarray.push(engineer);
+      sortedEmployeeArray.push(engineer);
     }
     for (const intern of tempInternArray) {
-      employeeHTMLarray.push(intern);
+      sortedEmployeeArray.push(intern);
     }
-    console.log(employeeHTMLarray);
-    // let allEmployeesHTML = "";
+
+    // Create HTML card for each employee
+    let allEmployeesHTML = "";
+    for (const employee of sortedEmployeeArray) {
+      switch (employee.title) {
+        case "Manager":
+          const managerHTMLcard = managerHTML(
+            employee.name,
+            employee.title,
+            employee.id,
+            employee.email,
+            employee.officeNumber
+          );
+          allEmployeesHTML += managerHTMLcard;
+          break;
+        case "Engineer":
+          const engineerHTMLcard = engineerHTML(
+            employee.name,
+            employee.title,
+            employee.id,
+            employee.email,
+            employee.github
+          );
+          allEmployeesHTML += engineerHTMLcard;
+          break;
+        case "Intern":
+          const internHTMLcard = internHTML(
+            employee.name,
+            employee.title,
+            employee.id,
+            employee.email,
+            employee.school
+          );
+          allEmployeesHTML += internHTMLcard;
+          break;
+      }
+    }
+    console.log(allEmployeesHTML);
+
     // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
   }
 }
