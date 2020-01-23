@@ -1,9 +1,136 @@
+// Require dependencies
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
 const inquirer = require("inquirer");
+
+// Dynamic HTML
+
+function managerHTML(name, title, id, email, office) {
+  return `
+  <div class="card bg-light">
+    <div class="card-header">
+      <h2 class="font-weight-bold">${name}</h2>
+      <h3>${title}</h3>
+    </div>
+    <div class="card-body bg-light">
+      <p class="employeeID">ID: ${id}</p>
+      <p class="employeeEmail">
+        Email: ${email}
+      </p>
+      <p class="employeeThird">Office number: ${office}</p>
+    </div>
+  </div>
+  `;
+}
+
+function engineerHTML(name, title, id, email, github) {
+  return `
+  <div class="card bg-light">
+    <div class="card-header">
+      <h2 class="font-weight-bold">${name}</h2>
+      <h3>${title}</h3>
+    </div>
+    <div class="card-body bg-light">
+      <p class="employeeID">ID: ${id}</p>
+      <p class="employeeEmail">
+        Email: ${email}
+      </p>
+      <p class="employeeThird">GitHub: ${github}</p>
+    </div>
+  </div>
+  `;
+}
+
+function internHTML(name, title, id, email, school) {
+  return `
+  <div class="card bg-light">
+    <div class="card-header">
+      <h2 class="font-weight-bold">${name}</h2>
+      <h3>${title}</h3>
+    </div>
+    <div class="card-body bg-light">
+      <p class="employeeID">ID: ${id}</p>
+      <p class="employeeEmail">
+        Email: ${email}
+      </p>
+      <p class="employeeThird">School: ${school}</p>
+    </div>
+  </div>
+  `;
+}
+
+function pageHTML(allEmployeesHTML) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Employee Summary</title>
+    <!--Bootstrap CDN-->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <style>
+      #employeeDetails .card {
+        margin: 15px;
+        min-width: 260px;
+      }
+      .employeeID,
+      .employeeEmail,
+      .employeeThird {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 8px 16px;
+        margin: 0;
+      }
+      .employeeID {
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-bottom: none;
+      }
+      .employeeThird {
+        border-radius: 0 0 0.25rem 0.25rem;
+        border-top: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="jumbotron jumbotron-fluid bg-primary">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <h1 class="text-light text-center">Team Employee Summary</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div
+            class="col d-flex justify-content-center flex-wrap"
+            id="employeeDetails"
+          >
+            ${allEmployeesHTML}
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+  `;
+}
+
+// Logic for building a team summary:
 
 class EmployeeSummary {
   constructor() {
@@ -221,9 +348,60 @@ class EmployeeSummary {
   }
 
   completeTeam() {
-    console.log(
-      "Loop through employeeArray and build html page based on user input, then log success."
-    );
+    // Sort employeeArray alphabetically by name
+    function compare(a, b) {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      let comparison = 0;
+      if (nameA > nameB) {
+        comparison = 1;
+      } else if (nameB > nameA) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    this.employeeArray.sort(compare);
+    // Sort employeeArray by title
+    let employeeHTMLarray = [];
+    let tempManagerArray = [];
+    let tempEngineerArray = [];
+    let tempInternArray = [];
+    for (const employee of this.employeeArray) {
+      switch (employee.title) {
+        case "Manager":
+          tempManagerArray.push(employee);
+          break;
+        case "Engineer":
+          tempEngineerArray.push(employee);
+          break;
+        case "Intern":
+          tempInternArray.push(employee);
+          break;
+      }
+    }
+    //
+    console.log("-".repeat(75));
+    console.log("tempManagerArray:");
+    console.log(tempManagerArray);
+    console.log("-".repeat(75));
+    console.log("tempEngineerArray:");
+    console.log(tempEngineerArray);
+    console.log("-".repeat(75));
+    console.log("tempInternArray:");
+    console.log(tempInternArray);
+    console.log("-".repeat(75));
+    //
+    for (const manager of tempManagerArray) {
+      employeeHTMLarray.push(manager);
+    }
+    for (const engineer of tempEngineerArray) {
+      employeeHTMLarray.push(engineer);
+    }
+    for (const intern of tempInternArray) {
+      employeeHTMLarray.push(intern);
+    }
+    console.log(employeeHTMLarray);
+    // let allEmployeesHTML = "";
     // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
   }
 }
@@ -240,4 +418,4 @@ newTeam.buildTeam();
 
 // Use inquirer to ask the user if they have more employees to add to the team. If yes, repeat two steps above. If no, loop through employeeArray and build html page based on user input, then log success or error
 
-// Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
+// Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam(). If not, return console.log("Thank you for using the template engine! Goodbye.")
