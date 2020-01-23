@@ -6,9 +6,6 @@ const Manager = require("./lib/Manager");
 
 const inquirer = require("inquirer");
 const fs = require("fs");
-// const util = require("util");
-
-// const writeFileAsync = util.promisify(fs.writeFile);
 
 // Dynamic HTML
 
@@ -464,6 +461,7 @@ class EmployeeSummary {
 
     // Write employee summary HTML file
     const fullHTML = pageHTML(allEmployeesHTML, this.teamName);
+
     fs.writeFile(`./output/${this.teamName}.html`, fullHTML, err => {
       if (err) {
         return console.log(err);
@@ -471,9 +469,8 @@ class EmployeeSummary {
       console.log(
         `Successfully wrote ${this.teamName}.html in the output folder.`
       );
+      this.askIfAnotherTeam();
     });
-
-    return this.askIfAnotherTeam();
   }
 
   askIfAnotherTeam() {
