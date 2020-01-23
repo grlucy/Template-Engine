@@ -132,7 +132,17 @@ function pageHTML(allEmployeesHTML, teamName) {
   `;
 }
 
-// Logic for building a team summary:
+// Logic for building a team summary
+
+// LOGIC FLOW OVERVIEW:
+
+// Use inquirer to ask user for employee title. Switch statement to create correct class of employee based on title.
+
+// Use inquirer to ask user for employee name, id, email, and third thing depending on type. Create new employee using appropriate subclass. Add employee to the employeeArray.
+
+// Use inquirer to ask the user if they have more employees to add to the team. If yes, repeat two steps above. If no, loop through employeeArray and build html page based on user input, then log success or error
+
+// Use inquirer to ask if user wants to start building another team; if so, start from beginning. If not, return goodbye message.
 
 class EmployeeSummary {
   constructor() {
@@ -460,20 +470,31 @@ class EmployeeSummary {
       );
     });
 
-    // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
+    return askIfAnotherTeam();
+  }
+
+  askIfAnotherTeam() {
+    return inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "moreTeam",
+          message: "Would you like to build another team?",
+          choices: ["Yes", "No"]
+        }
+      ])
+      .then(val => {
+        if (val.moreTeam === "Yes") {
+          return this.buildTeam();
+        } else {
+          return console.log(
+            "Thank you for using the template engine! Goodbye."
+          );
+        }
+      });
   }
 }
 
 const newTeam = new EmployeeSummary();
 
 newTeam.buildTeam();
-
-// LOGIC FLOW:
-
-// Use inquirer to ask user for employee title. Switch statement to create correct class of employee based on title.
-
-// Use inquirer to ask user for employee name, id, email, and third thing depending on type. Create new employee using appropriate subclass. Add employee to the employeeArray.
-
-// Use inquirer to ask the user if they have more employees to add to the team. If yes, repeat two steps above. If no, loop through employeeArray and build html page based on user input, then log success or error
-
-// Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam(). If not, return console.log("Thank you for using the template engine! Goodbye.")
