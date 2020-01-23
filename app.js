@@ -5,6 +5,7 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
 const inquirer = require("inquirer");
+const fs = require("fs");
 
 // Dynamic HTML
 
@@ -135,12 +136,32 @@ function pageHTML(allEmployeesHTML) {
 class EmployeeSummary {
   constructor() {
     this.employeeArray = [];
+    this.teamName = "";
   }
 
   buildTeam() {
     this.employeeArray = [];
     console.log("Let's start building your engineering team!");
-    return this.getTitle();
+    return this.nameTeam();
+  }
+
+  nameTeam() {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "teamName",
+          message:
+            "What do you want to name this team? (Letters & numbers only)",
+          validate: function(val) {
+            return /^[0-9a-zA-Z]+$/gi.test(val);
+          }
+        }
+      ])
+      .then(val => {
+        this.teamName = val.teamName;
+        return this.getTitle();
+      });
   }
 
   getTitle() {
@@ -174,7 +195,7 @@ class EmployeeSummary {
           name: "employeeName",
           message: "What is this employee's name?",
           validate: function(val) {
-            return /[a-z]/gi.test(val);
+            return /^[a-zA-Z]+( [a-zA-Z]+)*$/gi.test(val);
           }
         },
         {
@@ -182,7 +203,7 @@ class EmployeeSummary {
           name: "employeeId",
           message: "What is this employee's ID number?",
           validate: function(val) {
-            return /[1-9]/gi.test(val);
+            return /^[0-9]+$/gi.test(val);
           }
         },
         {
@@ -204,7 +225,7 @@ class EmployeeSummary {
           name: "employeeOffice",
           message: "What is this employee's office number?",
           validate: function(val) {
-            return /[1-9]/gi.test(val);
+            return /^[0-9]+$/gi.test(val);
           }
         }
       ])
@@ -228,7 +249,7 @@ class EmployeeSummary {
           name: "employeeName",
           message: "What is this employee's name?",
           validate: function(val) {
-            return /[a-z]/gi.test(val);
+            return /^[a-zA-Z]+( [a-zA-Z]+)*$/gi.test(val);
           }
         },
         {
@@ -236,7 +257,7 @@ class EmployeeSummary {
           name: "employeeId",
           message: "What is this employee's ID number?",
           validate: function(val) {
-            return /[1-9]/gi.test(val);
+            return /^[0-9]+$/gi.test(val);
           }
         },
         {
@@ -282,7 +303,7 @@ class EmployeeSummary {
           name: "employeeName",
           message: "What is this employee's name?",
           validate: function(val) {
-            return /[a-z]/gi.test(val);
+            return /^[a-zA-Z]+( [a-zA-Z]+)*$/gi.test(val);
           }
         },
         {
@@ -290,7 +311,7 @@ class EmployeeSummary {
           name: "employeeId",
           message: "What is this employee's ID number?",
           validate: function(val) {
-            return /[1-9]/gi.test(val);
+            return /^[0-9]+$/gi.test(val);
           }
         },
         {
@@ -312,7 +333,7 @@ class EmployeeSummary {
           name: "employeeSchool",
           message: "What is this employee's school?",
           validate: function(val) {
-            return /[a-z]/gi.test(val);
+            return /^[a-zA-Z]+( [a-zA-Z]+)*$/gi.test(val);
           }
         }
       ])
@@ -426,8 +447,17 @@ class EmployeeSummary {
           break;
       }
     }
+
+    // Write employee summary HTML file
     const fullHTML = pageHTML(allEmployeesHTML);
-    console.log(fullHTML);
+    fs.writeFile(`./output/${this.teamName}.html`, fullHTML, err => {
+      if (err) {
+        return console.log(err);
+      }
+      console.log(
+        `Successfully wrote ${this.teamName}.html in the output folder.`
+      );
+    });
 
     // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
   }
