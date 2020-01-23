@@ -38,7 +38,7 @@ function engineerHTML(name, title, id, email, github) {
       <p class="employeeEmail">
         Email: ${email}
       </p>
-      <p class="employeeThird">GitHub: ${github}</p>
+      <p class="employeeThird">GitHub: <a href="https://github.com/${github}" target="_blank">${github}</a></p>
     </div>
   </div>
   `;
@@ -426,7 +426,8 @@ class EmployeeSummary {
           break;
       }
     }
-    console.log(allEmployeesHTML);
+    const fullHTML = pageHTML(allEmployeesHTML);
+    console.log(fullHTML);
 
     // Use inquirer to ask if user wants to start building another team; if so, return this.buildTeam().
   }
