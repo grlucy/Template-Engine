@@ -63,7 +63,7 @@ function internHTML(name, title, id, email, school) {
   `;
 }
 
-function pageHTML(allEmployeesHTML) {
+function pageHTML(allEmployeesHTML, teamName) {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +71,7 @@ function pageHTML(allEmployeesHTML) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Employee Summary</title>
+    <title>${teamName} Employee Summary</title>
     <!--Bootstrap CDN-->
     <link
       rel="stylesheet"
@@ -108,7 +108,8 @@ function pageHTML(allEmployeesHTML) {
         <div class="container-fluid">
           <div class="row">
             <div class="col">
-              <h1 class="text-light text-center">Team Employee Summary</h1>
+              <h1 class="text-light text-center font-weight-bold">Team Employee Summary</h1>
+              <h3 class="text-light text-center">Team Name: ${teamName}</h3>
             </div>
           </div>
         </div>
@@ -449,7 +450,7 @@ class EmployeeSummary {
     }
 
     // Write employee summary HTML file
-    const fullHTML = pageHTML(allEmployeesHTML);
+    const fullHTML = pageHTML(allEmployeesHTML, this.teamName);
     fs.writeFile(`./output/${this.teamName}.html`, fullHTML, err => {
       if (err) {
         return console.log(err);
