@@ -171,30 +171,7 @@ class EmployeeSummary {
       ])
       .then(val => {
         this.teamName = val.teamName;
-        return this.getTitle();
-      });
-  }
-
-  getTitle() {
-    return inquirer
-      .prompt([
-        {
-          type: "list",
-          name: "employeeTitle",
-          message: "What type of employee would you like to add to the team?",
-          choices: ["Manager", "Engineer", "Intern"]
-        }
-      ])
-      .then(val => {
-        const employeeTitle = val.employeeTitle;
-        switch (employeeTitle) {
-          case "Manager":
-            return this.createManager();
-          case "Engineer":
-            return this.createEngineer();
-          case "Intern":
-            return this.createIntern();
-        }
+        return this.createManager();
       });
   }
 
@@ -204,7 +181,7 @@ class EmployeeSummary {
         {
           type: "input",
           name: "employeeName",
-          message: "What is this employee's name?",
+          message: "What is this team's manager's name?",
           validate: function(val) {
             return /^[a-zA-Z]+( [a-zA-Z]+)*$/gi.test(val);
           }
@@ -212,7 +189,7 @@ class EmployeeSummary {
         {
           type: "input",
           name: "employeeId",
-          message: "What is this employee's ID number?",
+          message: "What is the manager's employee ID number?",
           validate: function(val) {
             return /^[0-9]+$/gi.test(val);
           }
@@ -220,7 +197,7 @@ class EmployeeSummary {
         {
           type: "input",
           name: "employeeEmail",
-          message: "What is this employee's email address?",
+          message: "What is the manager's email address?",
           validate: function(val) {
             let test;
             if (val.includes("@")) {
@@ -234,7 +211,7 @@ class EmployeeSummary {
         {
           type: "input",
           name: "employeeOffice",
-          message: "What is this employee's office number?",
+          message: "What is the manager's office number?",
           validate: function(val) {
             return /^[0-9]+$/gi.test(val);
           }
@@ -248,7 +225,28 @@ class EmployeeSummary {
           val.employeeOffice
         );
         this.employeeArray.push(newManager);
-        return this.askIfDone();
+        return this.getTitle();
+      });
+  }
+
+  getTitle() {
+    return inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "employeeTitle",
+          message: "What type of employee would you like to add to the team?",
+          choices: ["Engineer", "Intern"]
+        }
+      ])
+      .then(val => {
+        const employeeTitle = val.employeeTitle;
+        switch (employeeTitle) {
+          case "Engineer":
+            return this.createEngineer();
+          case "Intern":
+            return this.createIntern();
+        }
       });
   }
 
