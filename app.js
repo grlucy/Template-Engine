@@ -467,7 +467,7 @@ class EmployeeSummary {
       console.log(
         `Successfully wrote ${this.teamName}.html in the output folder.`
       );
-      this.askIfAnotherTeam();
+      return this.askIfAnotherTeam();
     });
   }
 
